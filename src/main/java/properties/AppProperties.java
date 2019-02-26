@@ -19,6 +19,8 @@ public class AppProperties {
 
                 // save it in root directory
                 prop.store(output, null);
+                System.out.println("[MusicCore] Configuration file successfully created!");
+                System.exit(0);
             }
 
         } catch (IOException io) {
