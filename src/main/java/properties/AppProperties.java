@@ -1,5 +1,7 @@
 package properties;
 
+import net.dv8tion.jda.api.entities.Member;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -48,5 +50,17 @@ public class AppProperties {
             e.printStackTrace();
         }
         return prop.getProperty(name);
+    }
+
+    public boolean hasPermission(Member member) {
+        String roles[] = getProperties("roles").split(",");
+        for (int i = 0; i < member.getRoles().size(); i++) {
+            for (int e = 0; e < roles.length; e++) {
+                if (member.getRoles().get(i).getName().equals(roles[e])) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

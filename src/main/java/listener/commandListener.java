@@ -14,17 +14,12 @@ public class commandListener extends ListenerAdapter {
         properties = new AppProperties();
         if (event.getMessage().getContentRaw().startsWith(STATIC.PREFIX) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()) {
             for (int i = 0; i < event.getMember().getRoles().size(); i++) {
-                String[] roles = properties.getProperties("roles").split(",");
-                for (int e = 0; e < roles.length; e++) {
-                    if (event.getMember().getRoles().get(i).getName().equals(roles[e])) {
-                        commandHandler.handleCommand(commandHandler.parse.parser(event.getMessage().getContentRaw(), event));
-                        break;
-                    }
+                if (properties.hasPermission(event.getMember())) {
+                    commandHandler.handleCommand(commandHandler.parse.parser(event.getMessage().getContentRaw(), event));
                 }
             }
-            //commandHandler.handleCommand(commandHandler.parse.parser(event.getMessage().getContentRaw(), event));
         }
-
+        //commandHandler.handleCommand(commandHandler.parse.parser(event.getMessage().getContentRaw(), event));
     }
 
 }
