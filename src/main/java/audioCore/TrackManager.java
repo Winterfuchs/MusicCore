@@ -53,6 +53,10 @@ public class TrackManager extends AudioEventAdapter {
         queue.addAll(cQueue);
     }
 
+    public void setVolume(int vol) {
+        PLAYER.setVolume(vol);
+    }
+
     @Override
     public void onTrackStart(com.sedmelluq.discord.lavaplayer.player.AudioPlayer player, com.sedmelluq.discord.lavaplayer.track.AudioTrack track) {
         AudioInfo info = queue.element();

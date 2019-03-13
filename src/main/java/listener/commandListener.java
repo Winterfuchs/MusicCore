@@ -16,6 +16,7 @@ public class commandListener extends ListenerAdapter {
             for (int i = 0; i < event.getMember().getRoles().size(); i++) {
                 if (properties.hasPermission(event.getMember())) {
                     commandHandler.handleCommand(commandHandler.parse.parser(event.getMessage().getContentRaw(), event));
+                    break;
                 }
             }
         }

@@ -183,6 +183,28 @@ public class Music implements Command {
 
                 break;
 
+            case "volume":
+            case "vol":
+
+                if (isIdle(guild)) return;
+                if (args.length < 2) {
+                    sendErrorMsg(event, "Please enter a valid number!");
+                    return;
+                }
+                try {
+                    int vol = Integer.parseInt(Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1));
+                    if (vol <= 100) {
+                        getManager(guild).setVolume(vol);
+                    }
+                    else {
+                        sendErrorMsg(event, "The allowed max. volume is 100!");
+                    }
+                }
+                catch(Exception e) {
+                    sendErrorMsg(event, "Please enter an integer value!");
+                }
+
+                break;
 
             case "now":
             case "info":
