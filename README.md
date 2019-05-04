@@ -17,11 +17,11 @@ Create an application at the [Discord Developers](https://discordapp.com/develop
 You should now have access to your token.
 
 Go to your config.properties file which should be in the root directory of your application/bot.
-Insert the token in the configue.properties file at ```token=your_token```.
+Insert the token in the config.properties file at ```token=your_token```.
 Basically you're ready to go but you should also set ```roles=your_roles``` to allow certain roles to command the bot.
-If you wish to have more than one role, just seperate the roles with a comma.
+If you wish to have more than one role, just separate the roles with a comma.
 
-Well, you're finsihed!
+Well, you're finished!
 
 ## Commands
 
@@ -34,10 +34,11 @@ Use ```"-"``` as prefix for all commands.
 * ```"-m queue"``` shows the current playlist with all songs
 * ```"-m now"``` shows the current song with title and length
 * ```"-m skip"```skips to the next song in the queue
-* ```"-m shuffle``` shuffle all the songs in the queue
+* ```"-m shuffle"``` shuffle all the songs in the queue
 * ```"-m vol"``` sets the music volume
 * ```"-m pause"``` pauses the song
 * ```"-m resume"``` resumes the song
+* ```"-m time"``` jumps to a timestamp, formats to use are hh:mm:ss or mm:ss
 * ```"-help"``` shows a list of all commands
 * ```"-ping"``` pong!
 

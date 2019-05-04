@@ -218,6 +218,63 @@ public class Music implements Command {
                 getPlayer(guild).setPaused(false);
                 break;
 
+            case "time":
+
+                if (isIdle(guild)) return;
+
+                try {
+                    String rawTime = (Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1));
+                    String[] time = rawTime.split(":");
+                    int temp;
+                    int hour;
+                    int minutes;
+                    int seconds;
+
+                    if (args.length < 2) {
+                        sendErrorMsg(event, "Please enter a valid format!" +
+                                "\n\nFormats:\nhh:mm:ss or mm:ss\n\nYou can also use " +
+                                "just seconds to skip forward.");
+                        return;
+                    }
+
+                    switch(time.length) {
+                        case 1:
+                            seconds = Integer.parseInt(time[0]);
+                            temp =  seconds * 1000;
+                            getPlayer(guild).getPlayingTrack().setPosition(getPlayer(guild).getPlayingTrack().getPosition() + temp);
+                                break;
+
+                        case 2:
+                            minutes = Integer.parseInt(time[0]);
+                            seconds = Integer.parseInt(time[1]);
+                            temp = (seconds + (60 * minutes)) * 1000;
+                            getPlayer(guild).getPlayingTrack().setPosition(temp);
+                            break;
+
+                        case 3:
+                            hour = Integer.parseInt(time[0]);
+                            minutes = Integer.parseInt(time[1]);
+                            seconds = Integer.parseInt(time[2]);
+
+                            temp = (seconds + (60 * minutes) + (3600 * hour)) * 1000;
+                            getPlayer(guild).getPlayingTrack().setPosition(temp);
+                            break;
+
+                        default:
+                            sendErrorMsg(event, "Please enter a valid format!" +
+                                    "\n\nFormats:\nhh:mm:ss or mm:ss\n\nYou can also use " +
+                                    "just seconds to skip forward.");
+                            break;
+                    }
+
+                }
+                catch(Exception e) {
+                    sendErrorMsg(event, "Please enter a valid format!" +
+                            "\n\nFormats:\nhh:mm:ss or mm:ss\n\nYou can also use " +
+                            "just seconds to skip forward.");
+                }
+                break;
+
             case "now":
             case "info":
 
