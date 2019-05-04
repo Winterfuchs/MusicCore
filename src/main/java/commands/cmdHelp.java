@@ -26,6 +26,8 @@ public class cmdHelp implements Command {
                         .addField("-m skip", "Skips to the next song in the queue", false)
                         .addField("-m shuffle", "Shuffle all the songs in the queue", false)
                         .addField("-m vol", "Sets the music volume", false)
+                        .addField("-m pause", "Pauses the song", false)
+                        .addField("-m resume", "Resume the song", false)
                         .addField("-help", "Shows this text with all commands", false)
                         .addField("-ping", "Pong!", false)
                         .setColor(new Color(0,150,150))

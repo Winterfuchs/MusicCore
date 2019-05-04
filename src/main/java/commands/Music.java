@@ -206,6 +206,18 @@ public class Music implements Command {
 
                 break;
 
+            case "pause":
+
+                if (isIdle(guild)) return;
+                getPlayer(guild).setPaused(true);
+                break;
+
+            case "resume":
+
+                if (isIdle(guild)) return;
+                getPlayer(guild).setPaused(false);
+                break;
+
             case "now":
             case "info":
 
