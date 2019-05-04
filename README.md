@@ -36,6 +36,8 @@ Use ```"-"``` as prefix for all commands.
 * ```"-m skip"```skips to the next song in the queue
 * ```"-m shuffle``` shuffle all the songs in the queue
 * ```"-m vol"``` sets the music volume
+* ```"-m pause"``` pauses the song
+* ```"-m resume"``` resumes the song
 * ```"-help"``` shows a list of all commands
 * ```"-ping"``` pong!
 
