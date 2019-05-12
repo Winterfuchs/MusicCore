@@ -26,5 +26,6 @@ hs_err_pid*
 
 .idea
 META-INF
+SERVER_SETTINGS
 *.iml
 *.properties

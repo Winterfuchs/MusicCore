@@ -18,7 +18,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import javax.sound.midi.Track;
 import java.awt.Color;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -273,6 +275,123 @@ public class Music implements Command {
                             "\n\nFormats:\nhh:mm:ss or mm:ss\n\nYou can also use " +
                             "just seconds to skip forward.");
                 }
+                break;
+
+            case "save":
+
+                    String rawSave = (Arrays.stream(args).skip(0).map(s -> " " + s).collect(Collectors.joining()).substring(1));
+                    String[] save = rawSave.split(" ");
+
+
+                    if(save.length == 1) {
+                        sendErrorMsg(event, "You need a playlist name to save in!");
+                        return;
+                    }
+
+                    else if(save.length == 2) {
+                        sendErrorMsg(event, "You have to provide a link to the song!");
+                        return;
+                    }
+
+                   else if (!(save[2].startsWith("http://") || save[2].startsWith("https://"))) {
+                         sendErrorMsg(event, "Only links are allowed!");
+                         return;
+                     }
+
+                    else if (save.length > 3) {
+                        sendErrorMsg(event, "Only 2 arguments needed, " + save.length + " given!");
+                        return;
+                    }
+
+                    File path = new File("SERVER_SETTINGS/" + event.getGuild().getId() + "/playlists");
+
+                    if (!path.exists())
+                        path.mkdirs();
+
+                    File saveFile = new File("SERVER_SETTINGS/" + event.getGuild().getId() + "/playlists/" + args[1]);
+
+                try {
+                    BufferedWriter fileWriter = new BufferedWriter(new FileWriter(saveFile, true));
+                    fileWriter.append(args[2] + "\n");
+                    fileWriter.close();
+
+                    event.getTextChannel().sendMessage("Playlist " + save[0] + " saved successfully").queue();
+                }
+
+                catch(Exception e) {
+                    sendErrorMsg(event, "Sorry, an error has occurred! Please try to save again!");
+                }
+
+                break;
+
+            case "saved":
+                try {
+                    File[] saves = new File("SERVER_SETTINGS/" + event.getGuild().getId() + "/playlists").listFiles();
+                    StringBuilder list = new StringBuilder();
+
+                    if (saves.length > 0) {
+                        Arrays.stream(saves).forEach(file -> list.append("- **" + file.getName() + "**\n"));
+                        event.getTextChannel().sendMessage(list.toString()).queue();
+                    } else {
+                        event.getTextChannel().sendMessage("No playlists saved!").queue();
+                    }
+                } catch (Exception e) {
+                    sendErrorMsg(event, "Sorry, an error has occurred!");
+                }
+
+                break;
+
+            case "load":
+
+                if (args.length < 2) {
+                 sendErrorMsg(event, "You need to define a playlist to load.");
+                 return;
+                }
+
+                try {
+                    File savedFile = new File("SERVER_SETTINGS/" + event.getGuild().getId() + "/playlists/" + args[1]);
+                    BufferedReader reader = new BufferedReader(new FileReader(savedFile));
+
+                    String out;
+                    while((out = reader.readLine()) != null)
+                        loadTrack(out, event.getMember(), event.getMessage());
+
+
+                    if(getPlayer(guild).isPaused())
+                        getPlayer(guild).setPaused(false);
+
+                    new Timer().schedule(
+                            new java.util.TimerTask() {
+
+                                @Override
+                                public void run() {
+                                    int tracks =  getManager(guild).getQueue().size();
+                                    event.getTextChannel().sendMessage("Queued " + tracks + " tracks").queue();
+                                }
+                            }, 5000
+                    );
+
+                } catch(Exception e) {
+                    sendErrorMsg(event, "Sorry, an error has occurred!");
+                }
+
+                break;
+
+            case "delete":
+                try {
+                    if (args.length < 2) {
+                        sendErrorMsg(event, "You need to define a playlist to delete.");
+                        return;
+                    }
+
+                    File deleteFile = new File("SERVER_SETTINGS/" + event.getGuild().getId() + "/playlists/" + args[1]);
+                    deleteFile.delete();
+                    event.getTextChannel().sendMessage("Successfully deleted " + args[1] + "!").queue();
+
+                } catch (Exception e) {
+                    sendErrorMsg(event, "Sorry, couldn't delete file!");
+                }
+
                 break;
 
             case "now":

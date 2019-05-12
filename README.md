@@ -39,6 +39,10 @@ Use ```"-"``` as prefix for all commands.
 * ```"-m pause"``` pauses the song
 * ```"-m resume"``` resumes the song
 * ```"-m time"``` jumps to a timestamp, formats to use are hh:mm:ss or mm:ss
+* ```"-m save [name] [link]"``` saves a song into a playlist
+* ```"-m load [name]"``` loads a playlist into the queue
+* ```"-m saved"``` shows the saved playlists
+* ```"-m delete [name]"``` deletes a playlist
 * ```"-help"``` shows a list of all commands
 * ```"-ping"``` pong!
 
