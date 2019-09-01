@@ -315,7 +315,7 @@ public class Music implements Command {
                     fileWriter.append(args[2] + "\n");
                     fileWriter.close();
 
-                    event.getTextChannel().sendMessage("Playlist " + save[0] + " saved successfully").queue();
+                    event.getTextChannel().sendMessage("Playlist " + save[1] + " saved successfully").queue();
                 }
 
                 catch(Exception e) {
