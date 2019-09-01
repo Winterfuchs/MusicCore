@@ -3,6 +3,7 @@ package audioCore;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -40,6 +41,8 @@ public class TrackManager extends AudioEventAdapter {
     }
 
     public void purgeQueue() {
+        Guild g = queue.poll().getAuthor().getGuild();
+        g.getJDA().getPresence().setActivity(null);
         queue.clear();
     }
 
@@ -61,6 +64,7 @@ public class TrackManager extends AudioEventAdapter {
     public void onTrackStart(com.sedmelluq.discord.lavaplayer.player.AudioPlayer player, com.sedmelluq.discord.lavaplayer.track.AudioTrack track) {
         AudioInfo info = queue.element();
         VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
+        vChan.getJDA().getPresence().setActivity(Activity.playing(track.getInfo().title));
 
         if (vChan == null) {
             player.stopTrack();
@@ -74,6 +78,7 @@ public class TrackManager extends AudioEventAdapter {
     @Override
     public void onTrackEnd(com.sedmelluq.discord.lavaplayer.player.AudioPlayer player, com.sedmelluq.discord.lavaplayer.track.AudioTrack track, com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason endReason) {
         Guild g = queue.poll().getAuthor().getGuild();
+        g.getJDA().getPresence().setActivity(null);
 
         if (queue.isEmpty())
             new Thread(() -> g.getAudioManager().closeAudioConnection()).start();
