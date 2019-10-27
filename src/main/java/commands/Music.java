@@ -106,6 +106,11 @@ public class Music implements Command {
         seconds = seconds - (hours * 3600);
         long mins = Math.floorDiv(seconds, 60);
         seconds = seconds - (mins * 60);
+
+        if (hours > 168) {
+            return "-";
+        }
+
         return (hours == 0 ? "" : hours + ":") + String.format("%02d", mins) + ":" + String.format("%02d", seconds);
     }
 
@@ -406,7 +411,7 @@ public class Music implements Command {
                         new EmbedBuilder()
                                 .setDescription("**CURRENT TRACK INFO:**")
                                 .addField("Title", info.title, false)
-                                .addField("Duration", "`[ " + getTimestamp(track.getPosition()) + "/ " + getTimestamp(track.getDuration()) + " ]`", false)
+                                .addField("Duration", "`[ " + getTimestamp(track.getPosition()) + " / " + getTimestamp(track.getDuration()) + " ]`", false)
                                 .addField("Author", info.author, false)
                                 .build()
                 ).queue();
