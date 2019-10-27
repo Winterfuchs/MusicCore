@@ -42,8 +42,7 @@ public class TrackManager extends AudioEventAdapter {
     }
 
     public void purgeQueue() {
-        Guild g = queue.poll().getAuthor().getGuild();
-        g.getJDA().getPresence().setActivity(null);
+        guild.getJDA().getPresence().setActivity(null);
         queue.clear();
     }
 
