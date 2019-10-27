@@ -15,6 +15,7 @@ public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
     private final Queue<AudioInfo> queue;
+    private Guild guild;
 
     public TrackManager(AudioPlayer player) {
         this.PLAYER = player;
@@ -65,6 +66,7 @@ public class TrackManager extends AudioEventAdapter {
         AudioInfo info = queue.element();
         VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
         vChan.getJDA().getPresence().setActivity(Activity.playing(track.getInfo().title));
+        guild = queue.poll().getAuthor().getGuild();
 
         if (vChan == null) {
             player.stopTrack();
@@ -77,11 +79,10 @@ public class TrackManager extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(com.sedmelluq.discord.lavaplayer.player.AudioPlayer player, com.sedmelluq.discord.lavaplayer.track.AudioTrack track, com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason endReason) {
-        Guild g = queue.poll().getAuthor().getGuild();
-        g.getJDA().getPresence().setActivity(null);
+        guild.getJDA().getPresence().setActivity(null);
 
         if (queue.isEmpty())
-            new Thread(() -> g.getAudioManager().closeAudioConnection()).start();
+            new Thread(() -> guild.getAudioManager().closeAudioConnection()).start();
         else
             player.playTrack(queue.element().getTrack());
     }
