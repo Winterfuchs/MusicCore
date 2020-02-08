@@ -1,7 +1,7 @@
 # MusicCore
 
 #### About MusicCore
-MusicCore is written in Java 8 and using the [JDA](https://github.com/DV8FromTheWorld/JDA) (Java Discord API). It plays requested songs 
+MusicCore is using the [JDA](https://github.com/DV8FromTheWorld/JDA) (Java Discord API). It plays requested songs 
 from YouTube on your Discord server. This bot also features a permission system, which you can edit in the created config.properties file when starting the bot for the first time.
 
 ## Getting started
@@ -52,6 +52,5 @@ Make sure you're in a voice channel when requesting a song.
 
 * Better role-permission system (edit commands for individual roles)
 * Voice channel permissions
-* ...
 
 If you have any request which features should come next, just let me know!
