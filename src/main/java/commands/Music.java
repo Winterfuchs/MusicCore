@@ -18,7 +18,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.sound.midi.Track;
 import java.awt.Color;
 import java.io.*;
 import java.util.*;
@@ -68,6 +67,33 @@ public class Music implements Command {
     }
 
     private void loadTrack(String identifier, Member author, Message msg) {
+        Guild guild = author.getGuild();
+        getPlayer(guild);
+        MANAGER.setFrameBufferDuration(5000);
+        MANAGER.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                getManager(guild).queue(track, author);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                getManager(guild).queue(playlist.getTracks().get(0), author);
+            }
+
+            @Override
+            public void noMatches() {
+
+            }
+
+            @Override
+            public void loadFailed(FriendlyException e) {
+
+            }
+        });
+    }
+
+    private void loadPlaylist(String identifier, Member author, Message msg) {
         Guild guild = author.getGuild();
         getPlayer(guild);
         MANAGER.setFrameBufferDuration(5000);
@@ -162,6 +188,22 @@ public class Music implements Command {
                     input = "ytsearch: " + input;
 
                 loadTrack(input, event.getMember(), event.getMessage());
+                break;
+
+            case "playlist":
+            case "pl":
+
+                if (args.length < 2) {
+                    sendErrorMsg(event, "Please enter a valid source!");
+                    return;
+                }
+
+                String inputPlaylist = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
+
+                if (!(inputPlaylist.startsWith("http://") || inputPlaylist.startsWith("https://")))
+                    inputPlaylist = "ytsearch: " + inputPlaylist;
+
+                loadPlaylist(inputPlaylist, event.getMember(), event.getMessage());
                 break;
 
             case "skip":
